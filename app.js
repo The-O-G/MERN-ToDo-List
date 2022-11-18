@@ -5,7 +5,7 @@ app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
-var aryLst = ['omkar','not omkar', 'maybe omkar'];
+var aryLst = [];
 var date = new Date();
     
 var day ='';
@@ -23,13 +23,26 @@ app.get('/', function (req, res) {
 });
 
 app.post('/',function(request,response){
-
+    var pressed = (request['body']['action']);
     var item = request.body.inpVal;
-    if(item != aryLst[aryLst.length-1]){
-    aryLst.push(item);
+    if (pressed == '+') {
+        
+        if(item != aryLst[aryLst.length-1]){
+            aryLst.push(item);
+            }
+        
+            response.render("list", {isday: day, inpVal: aryLst})
+
+    } else if (pressed == '-') {
+        
+        if(item != aryLst[aryLst.length-1]){
+            aryLst.push(item);
+            }
+            aryLst = [];
+            response.render("list", {isday: day, inpVal: aryLst});
     }
 
-    response.render("list", {isday: day, inpVal: aryLst});
+
 });
 
 app.listen(3000, function () {
